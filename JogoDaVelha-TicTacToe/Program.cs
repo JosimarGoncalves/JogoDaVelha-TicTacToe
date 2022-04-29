@@ -5,48 +5,46 @@ using System.Diagnostics;
 
 class Program
 {
-    public const int l = 3;
-    public const int c = 3;
-    public static int[,] matrix = new int[l, c];
+    //public const int l = 3;
+    //public const int c = 3;
+    //public static int[,] matrix = new int[l, c];
 
     public static char[] arr = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
     public static int player = 1;
 
-
-   
-
+    
     public static int choice;
         
-    public static int status;
+    public static int status =0;
 
-    public static bool jogando;
+    public static bool jogando =true;
 
 
     static void Main()
-    {        
+    {
+        
         TabuleiroThread();
 
-        while (!jogando)
-        {
-            
-            
+        while (jogando == true)
+        {                        
             while (status == 0)
-            {
-                
+            {                
                 if (player % 2 ==0)
                 {
                     Player2Threading();
                     CheckThreading();
+                    
                 }
                 else
                 {
                     Player1Threading();
                     CheckThreading();
+                    
                 }
             }
-            
+           
         }
-
+       
     }
     #region Criacao das Threads
     public static void TabuleiroThread()
@@ -85,13 +83,13 @@ class Program
         Console.WriteLine("\n");
 
         Console.WriteLine("     |     |      ");
-        Console.WriteLine("  {0}  |  {1}  |  {2}", arr[7], arr[8], arr[9]);
+        Console.WriteLine("  {0}  |  {1}  |  {2}", arr[1], arr[2], arr[3]);
         Console.WriteLine("_____|_____|_____ ");
         Console.WriteLine("     |     |      ");
         Console.WriteLine("  {0}  |  {1}  |  {2}", arr[4], arr[5], arr[6]);
         Console.WriteLine("_____|_____|_____ ");
         Console.WriteLine("     |     |      ");
-        Console.WriteLine("  {0}  |  {1}  |  {2}", arr[1], arr[2], arr[3]);
+        Console.WriteLine("  {0}  |  {1}  |  {2}", arr[7], arr[8], arr[9]);
         Console.WriteLine("     |     |      ");
 
     }
@@ -114,7 +112,7 @@ class Program
                 if (arr[choice] != 'X' && arr[choice] != 'O')
                 {
                     arr[choice] = 'X';
-                player++;
+                    player++;
 
                 }
                 else
@@ -176,24 +174,25 @@ class Program
     }
     public static void Check() //Verifica se algum jogador ganhou
     {
+       
         #region Horizontal 
         //Verificador Primeira linha
         if (arr[1] == arr[2] && arr[2] == arr[3])
         {
             status = 1;
-            jogando = false;
+            
         }
         //Verificador Segundo Linha
         else if (arr[4] == arr[5] && arr[5] == arr[6])
         {
             status = 1;
-            jogando = false;
+            
         }
         //Verificador Terceira linha
-        else if (arr[6] == arr[7] && arr[7] == arr[8])
+        else if (arr[7] == arr[8] && arr[8] == arr[9])
         {
             status = 1;
-            jogando = false;
+           
         }
         #endregion
         #region Vertical
@@ -201,31 +200,31 @@ class Program
         else if (arr[1] == arr[4] && arr[4] == arr[7])
         {
             status = 1;
-            jogando = false;
+            
         }
         //Segunda Coluna
         else if (arr[2] == arr[5] && arr[5] == arr[8])
         {
             status = 1;
-            jogando = false;
+            
         }
         //Terceira Coluna
         else if (arr[3] == arr[6] && arr[6] == arr[9])
         {
             status = 1;
-            jogando = false;
+            
         }
         #endregion
         #region Diagonais
         else if (arr[1] == arr[5] && arr[5] == arr[9])
         {
             status = 1;
-            jogando = false;
+            
         }
         else if (arr[3] == arr[5] && arr[5] == arr[7])
         {
             status = 1;
-            jogando = false;
+            
         }
         #endregion
         #region Deu Velha
@@ -233,18 +232,19 @@ class Program
         else if (arr[1] != '1' && arr[2] != '2' && arr[3] != '3' && arr[4] != '4' && arr[5] != '5' && arr[6] != '6' && arr[7] != '7' && arr[8] != '8' && arr[9] != '9')
         {
             status = -1;
-            jogando = false;
+            // jogando = false;
         }
+        
         #endregion
         else
         {
             status = 0;
         }
-       CheckWin();
+        CheckWin();
+
     }
     public static void CheckWin()//Checar Status do jogo.
     {
-
         if (status == 1)
 
         {
@@ -252,15 +252,15 @@ class Program
             Console.WriteLine("Player {0} vendeu!!!", (player % 2) + 1);
 
         }
-        else if (status == -1)
-        {
-            Console.WriteLine("Velha");
-         }
 
+        else if(status == -1)
+        {
+            Console.WriteLine("Deu Empate!");
+        }
         else
         {
-
+            Console.Write("Continuem jogando...");
         }
-
+        
     }
 }
