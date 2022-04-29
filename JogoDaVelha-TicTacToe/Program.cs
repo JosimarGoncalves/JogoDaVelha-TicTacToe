@@ -255,8 +255,7 @@ class Program
         else if (status == -1)
         {
             Console.WriteLine("Velha");
-            
-        }
+         }
 
         else
         {
