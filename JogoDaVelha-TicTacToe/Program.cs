@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Diagnostics;
 
-namespace JogoDaVelha;
+
 class Program
 {
     public const int l = 3;
