@@ -5,10 +5,8 @@ using System.Diagnostics;
 
 class Program
 {
-    //public const int l = 3;
-    //public const int c = 3;
-    //public static int[,] matrix = new int[l, c];
 
+    #region Variaveis
     public static char[] arr = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
     public static int player = 1;
 
@@ -18,8 +16,8 @@ class Program
     public static int status =0;
 
     public static bool jogando =true;
-
-
+    #endregion
+    #region Chamada Principal 
     static void Main()
     {
         
@@ -46,6 +44,7 @@ class Program
         }
        
     }
+    #endregion
     #region Criacao das Threads
     public static void TabuleiroThread()
     {        
@@ -76,6 +75,7 @@ class Program
     }
     #endregion
 
+    #region Metodos
     public static void Board()
     {
         Console.Clear();
@@ -263,4 +263,5 @@ class Program
         }
         
     }
+    #endregion
 }
