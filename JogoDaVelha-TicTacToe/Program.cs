@@ -10,20 +10,27 @@ class Program
     public static char[] arr = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
     public static int player = 1;
 
-    
+    public static int modoJogo;
+    public static int escolhaJogo;
+
     public static int choice;
         
     public static int status =0;
 
-    public static bool jogando =true;
+    public static bool jogandoVs;
+    public static bool jogandoCpu;
     #endregion
     #region Chamada Principal 
     static void Main()
     {
-        
+        jogandoVs = false;
+        jogandoCpu = false;
+
+        EscolherModo();
+
         TabuleiroThread();
 
-        while (jogando == true)
+        while (jogandoVs == true)
         {                        
             while (status == 0)
             {                
@@ -42,7 +49,27 @@ class Program
             }
            
         }
-       
+        while (jogandoCpu == true)
+        {
+            while (status == 0)
+            {
+                if (player % 2 == 0)
+                {
+                    CpuThreading();
+                    CheckThreading();
+
+                }
+                else
+                {
+                    Player1Threading();
+                    CheckThreading();
+
+                }
+            }
+
+        }
+
+
     }
     #endregion
     #region Criacao das Threads
@@ -52,7 +79,14 @@ class Program
         tabuleiro.Start();
         tabuleiro.Join();
     }
-    
+
+    public static void CpuThreading()
+    {
+        Thread Computador = new Thread(Cpu);
+        Computador.Start();
+        Computador.Join();
+    }
+
     public static void Player1Threading()
     {
         Thread Player1 = new Thread(JogadorA);
@@ -79,7 +113,15 @@ class Program
     public static void Board()
     {
         Console.Clear();
-        Console.WriteLine("Player1: X and Player2: O");
+        if (escolhaJogo == 1)
+        {
+            Console.WriteLine("Player1: X and CPU: O");
+        }
+        if (escolhaJogo ==2)
+        {
+            Console.WriteLine("Player1: X and Player2: O");
+        }
+        
         Console.WriteLine("\n");
 
         Console.WriteLine("     |     |      ");
@@ -93,7 +135,80 @@ class Program
         Console.WriteLine("     |     |      ");
 
     }
+
+    public static void EscolherModo()
+    {
+        Console.WriteLine(" ");
+        Console.WriteLine("INICIANDO JOGO DA VELHA");
+        Console.WriteLine("ESCOLHA MODO DE JOGO: 1 PARA VS CPU OU 2 PARA 1P VS 2P");
+
+        try
+        {
+           escolhaJogo = int.Parse(Console.ReadLine());
+            while (escolhaJogo < 1 || escolhaJogo > 2)
+            {
+                Console.Write("DIGITE 1 OU 2 ");
+
+                escolhaJogo = int.Parse(Console.ReadLine());
+
+            }
+
+            if (escolhaJogo == 1)
+            {
+                jogandoCpu = true;
+                Console.Write("Sera que foi 1?");
+            }
+            if (escolhaJogo == 2)
+            {
+                jogandoVs = true;
+                Console.Write("Sera que foi 2?");
+            }
+
+            
+        }
+
+        catch (Exception e)
+        {
+            Console.WriteLine("DIGITE UM NUMERO VÁLIDO ENTRE 1 OU 2: ");
+            EscolherModo();
+           
+        }
+
+        
+    }
     
+    public static void Cpu()
+    {
+        Random r = new Random();
+        try
+        {
+            choice = int.Parse(Console.ReadLine());
+            while (choice < 1 || choice > 9)
+            {
+                choice = r.Next(1, 9);
+              
+            }
+            if (arr[choice] != 'X' && arr[choice] != 'O')
+            {
+                arr[choice] = 'Y';
+                player++;
+
+            }
+            else
+            {
+                choice = r.Next(1, 9);
+            }
+
+        }
+
+        catch (Exception e)
+        {
+           Cpu(); 
+
+        }
+        Console.Clear();
+        TabuleiroThread();
+    }
     public static void JogadorA()
     {               
             Console.WriteLine(" ");
@@ -126,8 +241,10 @@ class Program
             catch (Exception e)
             {
                 Console.WriteLine("DIGITE UM NUMERO VÁLIDO ENTRE 1 A 9: ");
-                JogadorA();                
+                JogadorA();  
+            
             }
+         
         Console.Clear();
         TabuleiroThread();
         
@@ -252,6 +369,7 @@ class Program
             Console.WriteLine("Player {0} vendeu!!!", (player % 2) + 1);
 
         }
+
 
         else if(status == -1)
         {
