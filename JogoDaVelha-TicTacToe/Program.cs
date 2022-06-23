@@ -127,8 +127,9 @@ class Program
     public static void Board()
     {
         Console.Clear();
-        
-        
+
+        ConsoleColor background = Console.BackgroundColor;
+        ConsoleColor foreground = Console.ForegroundColor;
         Console.WriteLine(" ");
         if (escolhaJogo == 1)
         {
@@ -140,6 +141,7 @@ class Program
         }
         
         Console.WriteLine(choice);
+        Console.WriteLine(sortearJogadaCpu);
 
         Console.WriteLine("\n");
 
@@ -202,11 +204,11 @@ class Program
     
     public static void Cpu()
     {
-        Random r = new Random();
+        Random s = new Random();
 
-         choice = r.Next(1, 9);
+        // choice = r.Next(1, 9);
 
-        
+        sortearJogadaCpu = s.Next(1, 3);
        
 
         if (arr[choice] != 'X' && arr[choice] != 'O')
@@ -218,7 +220,14 @@ class Program
         else
         {
             // choice = r.Next(1, 9);
-            JogadaCPU();
+            if (sortearJogadaCpu == 1)
+            {
+                JogadaCpuDefesa();
+            }
+            if (sortearJogadaCpu == 2)
+            {
+                JogadaCpuAtaque();
+            }
 
         }
               
@@ -226,14 +235,15 @@ class Program
         TabuleiroThread();
     }
 
-    public static void JogadaCPU()
+    
+
+    public static void JogadaCpuDefesa()
     {
         Random r = new Random();
-
         //Verificador Segundo Linha
-        if      (arr[2] == 'X'  && arr[3] == 'X') { choice = 1; }
-        else if (arr[1] == 'X'  && arr[2] == 'X') { choice = 3; }
-        else if (arr[1] == 'X'  && arr[3] == 'X') { choice = 2; }
+        if (arr[2] == 'X' && arr[3] == 'X') { choice = 1; }
+        else if (arr[1] == 'X' && arr[2] == 'X') { choice = 3; }
+        else if (arr[1] == 'X' && arr[3] == 'X') { choice = 2; }
 
 
         //Verificador Segundo Linha
@@ -275,9 +285,63 @@ class Program
 
         else
         {
-            choice = r.Next(1, 9);
+            choice = r.Next(1, 10);
+            JogadaCpuAtaque();
         }
+    }
 
+    public static void JogadaCpuAtaque()
+    {
+        Random r = new Random();
+        //Verificador Segundo Linha
+        if (arr[2] == 'O' && arr[3] == 'O') { choice = 1; }
+        else if (arr[1] == 'O' && arr[2] == 'O') { choice = 3; }
+        else if (arr[1] == 'O' && arr[3] == 'O') { choice = 2; }
+
+
+        //Verificador Segundo Linha
+        else if (arr[5] == 'O' && arr[6] == 'O') { choice = 4; }
+        else if (arr[4] == 'O' && arr[5] == 'O') { choice = 6; }
+        else if (arr[4] == 'O' && arr[6] == 'O') { choice = 5; }
+
+        //Verificador Terceira linha
+        else if (arr[8] == 'O' && arr[9] == 'O') { choice = 7; }
+        else if (arr[7] == 'O' && arr[8] == 'O') { choice = 9; }
+        else if (arr[7] == 'O' && arr[9] == 'O') { choice = 8; }
+
+        #endregion
+        #region Vertical
+        //Primeira Coluna 
+        else if (arr[4] == 'O' && arr[7] == 'O') { choice = 1; }
+        else if (arr[1] == 'O' && arr[4] == 'O') { choice = 7; }
+        else if (arr[1] == 'O' && arr[7] == 'O') { choice = 4; }
+
+        //Segunda Coluna
+        else if (arr[5] == 'O' && arr[8] == 'O') { choice = 2; }
+        else if (arr[2] == 'O' && arr[5] == 'O') { choice = 8; }
+        else if (arr[2] == 'O' && arr[8] == 'O') { choice = 5; }
+
+        //Terceira Coluna
+        else if (arr[6] == 'O' && arr[9] == 'O') { choice = 3; }
+        else if (arr[3] == 'O' && arr[6] == 'O') { choice = 9; }
+        else if (arr[3] == 'O' && arr[9] == 'O') { choice = 6; }
+
+        #endregion
+        #region Diagonais
+        else if (arr[5] == 'O' && arr[9] == 'O') { choice = 1; }
+        else if (arr[1] == 'O' && arr[5] == 'O') { choice = 9; }
+        else if (arr[5] == 'O' && arr[7] == 'O') { choice = 3; }
+        else if (arr[3] == 'O' && arr[5] == 'O') { choice = 7; }
+        else if (arr[1] == 'O' && arr[9] == 'O') { choice = 5; }
+        else if (arr[7] == 'O' && arr[3] == 'O') { choice = 5; }
+
+
+        else
+        {
+           choice = r.Next(1, 10);
+           
+            
+        }
 
     }
     public static void JogadorA()
