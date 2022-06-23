@@ -5,7 +5,6 @@ using System.Diagnostics;
 
 class Program
 {
-
     #region Variaveis
     public static char[] arr = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
     public static int player = 1;
@@ -14,17 +13,26 @@ class Program
     public static int escolhaJogo;
 
     public static int choice;
+
+    public static int sortearJogadaCpu;
         
     public static int status =0;
 
     public static bool jogandoVs;
     public static bool jogandoCpu;
+
+    public static int pontoA;
+    public static int pontoB;
+    public static int pontoCpu;
     #endregion
     #region Chamada Principal 
     static void Main()
     {
         jogandoVs = false;
         jogandoCpu = false;
+        pontoA = 0;
+        pontoB = 0;
+        pontoCpu = 0;
 
         EscolherModo();
 
@@ -68,6 +76,7 @@ class Program
             }
 
         }
+        
 
 
     }
@@ -107,12 +116,20 @@ class Program
         CheckGame.Start();
         CheckGame.Join();
     }
+
+   
+
     #endregion
 
     #region Metodos
+   
+    
     public static void Board()
     {
         Console.Clear();
+        
+        
+        Console.WriteLine(" ");
         if (escolhaJogo == 1)
         {
             Console.WriteLine("Player1: X and CPU: O");
@@ -122,6 +139,8 @@ class Program
             Console.WriteLine("Player1: X and Player2: O");
         }
         
+        Console.WriteLine(choice);
+
         Console.WriteLine("\n");
 
         Console.WriteLine("     |     |      ");
@@ -135,12 +154,16 @@ class Program
         Console.WriteLine("     |     |      ");
 
     }
+   
 
     public static void EscolherModo()
     {
         Console.WriteLine(" ");
         Console.WriteLine("INICIANDO JOGO DA VELHA");
-        Console.WriteLine("ESCOLHA MODO DE JOGO: 1 PARA VS CPU OU 2 PARA 1P VS 2P");
+        Console.WriteLine("ESCOLHA MODO DE JOGO: ");
+        Console.WriteLine("1: 1P VS CPU");
+        Console.WriteLine("2: 1P VS 2P");
+        Console.Write("DIGITE 1 OU 2: ");
 
         try
         {
@@ -180,34 +203,82 @@ class Program
     public static void Cpu()
     {
         Random r = new Random();
-        try
+
+         choice = r.Next(1, 9);
+
+        
+       
+
+        if (arr[choice] != 'X' && arr[choice] != 'O')
         {
-            choice = int.Parse(Console.ReadLine());
-            while (choice < 1 || choice > 9)
-            {
-                choice = r.Next(1, 9);
+           arr[choice] = 'O';
+           player++;
+
+         }
+        else
+        {
+            // choice = r.Next(1, 9);
+            JogadaCPU();
+
+        }
               
-            }
-            if (arr[choice] != 'X' && arr[choice] != 'O')
-            {
-                arr[choice] = 'Y';
-                player++;
-
-            }
-            else
-            {
-                choice = r.Next(1, 9);
-            }
-
-        }
-
-        catch (Exception e)
-        {
-           Cpu(); 
-
-        }
         Console.Clear();
         TabuleiroThread();
+    }
+
+    public static void JogadaCPU()
+    {
+        Random r = new Random();
+
+        //Verificador Segundo Linha
+        if      (arr[2] == 'X'  && arr[3] == 'X') { choice = 1; }
+        else if (arr[1] == 'X'  && arr[2] == 'X') { choice = 3; }
+        else if (arr[1] == 'X'  && arr[3] == 'X') { choice = 2; }
+
+
+        //Verificador Segundo Linha
+        else if (arr[5] == 'X' && arr[6] == 'X') { choice = 4; }
+        else if (arr[4] == 'X' && arr[5] == 'X') { choice = 6; }
+        else if (arr[4] == 'X' && arr[6] == 'X') { choice = 5; }
+
+        //Verificador Terceira linha
+        else if (arr[8] == 'X' && arr[9] == 'X') { choice = 7; }
+        else if (arr[7] == 'X' && arr[8] == 'X') { choice = 9; }
+        else if (arr[7] == 'X' && arr[9] == 'X') { choice = 8; }
+
+        #endregion
+        #region Vertical
+        //Primeira Coluna 
+        else if (arr[4] == 'X' && arr[7] == 'X') { choice = 1; }
+        else if (arr[1] == 'X' && arr[4] == 'X') { choice = 7; }
+        else if (arr[1] == 'X' && arr[7] == 'X') { choice = 4; }
+
+        //Segunda Coluna
+        else if (arr[5] == 'X' && arr[8] == 'X') { choice = 2; }
+        else if (arr[2] == 'X' && arr[5] == 'X') { choice = 8; }
+        else if (arr[2] == 'X' && arr[8] == 'X') { choice = 5; }
+
+        //Terceira Coluna
+        else if (arr[6] == 'X' && arr[9] == 'X') { choice = 3; }
+        else if (arr[3] == 'X' && arr[6] == 'X') { choice = 9; }
+        else if (arr[3] == 'X' && arr[9] == 'X') { choice = 6; }
+
+        #endregion
+        #region Diagonais
+        else if (arr[5] == 'X' && arr[9] == 'X') { choice = 1; }
+        else if (arr[1] == 'X' && arr[5] == 'X') { choice = 9; }
+        else if (arr[5] == 'X' && arr[7] == 'X') { choice = 3; }
+        else if (arr[3] == 'X' && arr[5] == 'X') { choice = 7; }
+        else if (arr[1] == 'X' && arr[9] == 'X') { choice = 5; }
+        else if (arr[7] == 'X' && arr[3] == 'X') { choice = 5; }
+
+
+        else
+        {
+            choice = r.Next(1, 9);
+        }
+
+
     }
     public static void JogadorA()
     {               
@@ -362,24 +433,48 @@ class Program
     }
     public static void CheckWin()//Checar Status do jogo.
     {
-        if (status == 1)
+        if (status == 1 && jogandoVs ==true)
 
         {
-            Console.WriteLine("Temos um vencedor!!!!");
-            Console.WriteLine("Player {0} vendeu!!!", (player % 2) + 1);
+            Console.WriteLine("Temos um vencedor!!!! ");
+            Console.WriteLine("Player {0} venceu!!! ", (player % 2) + 1);
 
         }
 
+        if (status == 1 && jogandoCpu== true)
+
+        {
+            Console.WriteLine("Temos um vencedor!!!! ");
+            if (player %2 == 0)
+            {
+                Console.WriteLine("Player 1 venceu!!! ");
+                pontoA++;
+
+            }
+            if (player % 2 == 1)
+            {
+                Console.WriteLine("Player CPU venceu!!! ");
+                pontoCpu++;
+            }
+            //Console.WriteLine("Player {0} venceu!!! ", (player % 2) + 1);
+
+
+        }
 
         else if(status == -1)
         {
             Console.WriteLine("Deu Empate!");
+
         }
         else
         {
             Console.Write("Continuem jogando...");
+
         }
         
+        
     }
+
+    
     #endregion
 }
